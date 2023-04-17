@@ -3,7 +3,7 @@ title: About Alembic
 feature_text: |
   # UNIVERSIDAD NACIONAL DE CHIMBORAZO
   Dime y lo olvido, enséñame y lo recuerdo, involúcrame y lo aprendo.
-feature_image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Funivercimas.com%2Funiversidad-nacional-de-chimborazo-unach%2F&psig=AOvVaw1KNBfith5urF7TyhLXrV2n&ust=1681860793517000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCJCqxOuJsv4CFQAAAAAdAAAAABAS"
+feature_image: "https://picsum.photos/1300/400?image=989"
 excerpt: "Alembic is a starting point for [Jekyll](https://jekyllrb.com/) projects. Rather than starting from scratch, this boilerplate is designed to get the ball rolling immediately. Install it, configure it, tweak it, push it."
 ---
 
