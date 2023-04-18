@@ -1,5 +1,5 @@
 /* ===================================================================
- * Epitome - Main JS
+ * Kairos - Main JS
  *
  * ------------------------------------------------------------------- */
 
@@ -9,13 +9,13 @@
     
     var cfg = {
         scrollDuration : 800, // smoothscroll duration
-        mailChimpURL   : ''   // mailchimp url
+        mailChimpURL   : 'https://facebook.us8.list-manage.com/subscribe/post?u=cdb7b577e41181934ed6a6a44&amp;id=e6957d85dc'   // mailchimp url
     },
 
     $WIN = $(window);
 
     // Add the User Agent to the <html>
-    // will be used for IE10/IE11 detection (Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0; rv:11.0))
+    // will be used for IE10 detection (Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0))
     var doc = document.documentElement;
     doc.setAttribute('data-useragent', navigator.userAgent);
 
@@ -49,7 +49,7 @@
     * ------------------------------------------------------ */
     var ssMenuOnScrolldown = function() {
         
-        var hdr = $('.s-header'),
+        var hdr= $('.s-header'),
             hdrTop = $('.s-header').offset().top;
 
         $WIN.on('scroll', function() {
@@ -96,12 +96,13 @@
 
     };
 
+
    /* Highlight the current section in the navigation bar
     * ------------------------------------------------------ */
     var ssWaypoints = function() {
 
         var sections = $(".target-section"),
-            navigation_links = $(".header-main-nav li a");
+            navigation_links = $(".header-nav-wrap li a");
 
         sections.waypoint( {
 
@@ -113,7 +114,7 @@
 
                 if (direction === "up") active_section = active_section.prevAll(".target-section").first();
 
-                var active_link = $('.header-main-nav li a[href="#' + active_section.attr("id") + '"]');
+                var active_link = $('.header-nav-wrap li a[href="#' + active_section.attr("id") + '"]');
 
                 navigation_links.parent().removeClass("current");
                 active_link.parent().addClass("current");
@@ -127,89 +128,60 @@
     };
 
 
-   /* Masonry
-    * ---------------------------------------------------- */ 
-    var ssMasonryFolio = function () {
-        
-        var containerBricks = $('.masonry');
-
-        containerBricks.imagesLoaded(function () {
-            containerBricks.masonry({
-                itemSelector: '.masonry__brick',
-                resize: true
-            });
-        });
-
-    };
-
-
-   /* photoswipe
-    * ----------------------------------------------------- */
-    var ssPhotoswipe = function() {
-        var items = [],
-            $pswp = $('.pswp')[0],
-            $folioItems = $('.item-folio');
-
-        // get items
-        $folioItems.each( function(i) {
-
-            var $folio = $(this),
-                $thumbLink =  $folio.find('.thumb-link'),
-                $title = $folio.find('.item-folio__title'),
-                $caption = $folio.find('.item-folio__caption'),
-                $titleText = '<h4>' + $.trim($title.html()) + '</h4>',
-                $captionText = $.trim($caption.html()),
-                $href = $thumbLink.attr('href'),
-                $size = $thumbLink.data('size').split('x'),
-                $width  = $size[0],
-                $height = $size[1];
-        
-            var item = {
-                src  : $href,
-                w    : $width,
-                h    : $height
-            }
-
-            if ($caption.length > 0) {
-                item.title = $.trim($titleText + $captionText);
-            }
-
-            items.push(item);
-        });
-
-        // bind click event
-        $folioItems.each(function(i) {
-
-            $(this).find('.thumb-link').on('click', function(e) {
-                e.preventDefault();
-                var options = {
-                    index: i,
-                    showHideOpacity: true
-                }
-
-                // initialize PhotoSwipe
-                var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-                lightBox.init();
-            });
-
-        });
-    };
-
-
    /* slick slider
     * ------------------------------------------------------ */
     var ssSlickSlider = function() {
         
+        $('.about-desc__slider').slick({
+            arrows: false,
+            dots: true,
+            infinite: true,
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            pauseOnFocus: false,
+            autoplaySpeed: 1500,
+            responsive: [
+                {
+                    breakpoint: 1401,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 1101,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 1
+                    }
+                },
+                {
+                    breakpoint: 701,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        });
+
         $('.testimonials__slider').slick({
             arrows: false,
             dots: true,
             infinite: true,
-            slidesToShow: 1,
+            slidesToShow: 2,
             slidesToScroll: 1,
             pauseOnFocus: false,
             autoplaySpeed: 1500,
-            fade: true,
-            cssEase: 'linear'
+            responsive: [
+                {
+                    breakpoint: 1001,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
         });
     };
 
@@ -220,7 +192,7 @@
         
         $('.smoothscroll').on('click', function (e) {
             var target = this.hash,
-            $target    = $(target);
+                $target = $(target);
             
                 e.preventDefault();
                 e.stopPropagation();
@@ -230,9 +202,9 @@
             }, cfg.scrollDuration, 'swing').promise().done(function () {
 
                 // check if menu is open
-                if ($('body').hasClass('menu-is-open')) {
-                    $('.header-menu-toggle').trigger('click');
-                }
+                // if ($('body').hasClass('menu-is-open')) {
+                //     $('.header-menu-toggle').trigger('click');
+                // }
 
                 window.location.hash = target;
             });
@@ -268,6 +240,58 @@
     };
 
 
+    /* Back to Top
+    * ------------------------------------------------------ */
+    var ssBackToTop = function() {
+        
+    var pxShow      = 500,
+        goTopButton = $(".go-top");
+
+        // Show or hide the button
+        if ($(window).scrollTop() >= pxShow) goTopButton.addClass('link-is-visible');
+
+        $(window).on('scroll', function() {
+            if ($(window).scrollTop() >= pxShow) {
+                if(!goTopButton.hasClass('link-is-visible')) goTopButton.addClass('link-is-visible')
+            } else {
+                goTopButton.removeClass('link-is-visible')
+            }
+        });
+    };
+
+
+   /* AjaxChimp
+    * ------------------------------------------------------ */
+    var ssAjaxChimp = function() {
+        
+        $('#mc-form').ajaxChimp({
+            language: 'es',
+            url: cfg.mailChimpURL
+        });
+
+        // Mailchimp translation
+        //
+        //  Defaults:
+        //	 'submit': 'Submitting...',
+        //  0: 'We have sent you a confirmation email',
+        //  1: 'Please enter a value',
+        //  2: 'An email address must contain a single @',
+        //  3: 'The domain portion of the email address is invalid (the portion after the @: )',
+        //  4: 'The username portion of the email address is invalid (the portion before the @: )',
+        //  5: 'This email address looks fake or invalid. Please enter a real email address'
+
+        $.ajaxChimp.translations.es = {
+            'submit': 'Submitting...',
+            0: '<i class="fas fa-check"></i> We have sent you a confirmation email',
+            1: '<i class="fas fa-exclamation-triangle"></i> You must enter a valid e-mail address.',
+            2: '<i class="fas fa-exclamation-triangle"></i> E-mail address is not valid.',
+            3: '<i class="fas fa-exclamation-triangle"></i> E-mail address is not valid.',
+            4: '<i class="fas fa-exclamation-triangle"></i> E-mail address is not valid.',
+            5: '<i class="fas fa-exclamation-triangle"></i> E-mail address is not valid.'
+        }
+    };
+
+
    /* Initialize
     * ------------------------------------------------------ */
     (function clInit() {
@@ -276,12 +300,12 @@
         ssMenuOnScrolldown();
         ssMobileMenu();
         ssWaypoints();
-        ssMasonryFolio();
-        ssPhotoswipe();
         ssSlickSlider();
         ssSmoothScroll();
         ssAlertBoxes();
         ssAOS();
+        ssBackToTop();
+        ssAjaxChimp();
 
     })();
 
