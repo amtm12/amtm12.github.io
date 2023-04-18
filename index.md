@@ -1,5 +1,5 @@
 ---
-title: Sitio Web
+title: Web Personal
 feature_text: |
   # UNIVERSIDAD NACIONAL DE CHIMBORAZO
   Dime y lo olvido, enséñame y lo recuerdo, involúcrame y lo aprendo.
